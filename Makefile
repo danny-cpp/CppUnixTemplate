@@ -25,7 +25,9 @@ $(TARGET): $(OBJS)
 	echo "$(CC) -o $@ $^"
 	$(CC) -o $@ $^
 
-# Automatic dependency required for this section
+# Automatic dependency required for this section. Without rules for
+# header, no recompilation happens if only the corresponding header
+# file is changed
 $(BLDDIR)/%.o: $(SRCDIR)/%.cpp
 	mkdir -p $(BLDDIR)
 	echo "Compiling translation units"
@@ -34,3 +36,4 @@ $(BLDDIR)/%.o: $(SRCDIR)/%.cpp
 clean:
 	rm -fr $(BLDDIR)
 	rm -fr bin/*
+
