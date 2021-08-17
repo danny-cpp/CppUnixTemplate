@@ -4,12 +4,12 @@
 #
 # https://github.com/danny-cpp
 ###############################################################
-CC		:= g++
+CC	:= g++
 SRCDIR	:= src
 BLDDIR	:= build
 TARGET	:= bin/runner
 
-SRC		:= $(shell find $(SRCDIR) -type f -name *.cpp)
+SRC	:= $(shell find $(SRCDIR) -type f -name *.cpp)
 OBJS	:= $(patsubst $(SRCDIR)/%, $(BLDDIR)/%, $(SRC:.cpp=.o))
 INCLUDE	:= -I include
 
@@ -25,6 +25,7 @@ $(TARGET): $(OBJS)
 	echo "$(CC) -o $@ $^"
 	$(CC) -o $@ $^
 
+# Automatic dependency required for this section
 $(BLDDIR)/%.o: $(SRCDIR)/%.cpp
 	mkdir -p $(BLDDIR)
 	echo "Compiling translation units"
