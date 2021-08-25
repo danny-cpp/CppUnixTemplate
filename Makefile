@@ -1,13 +1,21 @@
 ###############################################################
+# Standard Makefile template for all projects
 # Copyright Danh Nguyen 2021
 # Based on GNU C++ standard
 #
 # https://github.com/danny-cpp
 ###############################################################
+PRJNAME := main
+
+# These following directories are assumed to exist; abide to GNU guideline.
 CC	:= g++
 SRCDIR	:= src
 BLDDIR	:= build
-TARGET	:= bin/runner
+TARGET	:= bin/$(PRJNAME)
+
+# Do not remove -MP -MD flags. These are necessary for generating *.d files,
+# which contains rules for headers
+CFLAGS := -Wall -MP -MD
 
 SRC	:= $(shell find $(SRCDIR) -type f -name *.cpp)
 OBJS	:= $(patsubst $(SRCDIR)/%, $(BLDDIR)/%, $(SRC:.cpp=.o))
@@ -24,10 +32,10 @@ $(TARGET): $(OBJS)
 	echo "Linking objs"
 	echo "$(CC) -o $@ $^"
 	$(CC) -o $@ $^
+-include $(BLDDIR)/*.d
 
-# Automatic dependency required for this section. Without rules for
-# header, no recompilation happens if only the corresponding header
-# file is changed
+# This section already include automatic dependency tracking by using -include
+# directive above. Do not add anything in the rules
 $(BLDDIR)/%.o: $(SRCDIR)/%.cpp
 	mkdir -p $(BLDDIR)
 	echo "Compiling translation units"
