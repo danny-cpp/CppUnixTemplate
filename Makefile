@@ -15,7 +15,12 @@ TARGET	:= bin/$(PRJNAME)
 
 # Do not remove -MP -MD flags. These are necessary for generating *.d files,
 # which contains rules for headers
-CFLAGS := -Wall -std=c++11 -MP -MD
+CFLAGS := -std=c++11 -MP -MD
+DEBUG := $(CFLAGS) -Wall -O0 -g -D_GLIBCXX_DEBUG
+RELEASE := $(CFLAGS) -O3 -march=native
+
+# CONFIGURE RELEASE/DEBUG MODE HERE
+MODE := $(DEBUG)
 
 SRC	:= $(shell find $(SRCDIR) -type f -name *.cpp)
 OBJS	:= $(patsubst $(SRCDIR)/%, $(BLDDIR)/%, $(SRC:.cpp=.o))
@@ -31,7 +36,7 @@ all: $(TARGET)
 $(TARGET): $(OBJS)
 	#echo "Linking objs"
 	#echo "$(CC) -o $@ $^"
-	$(CC) -o $@ $^
+	$(CC) $(MODE) -o $@ $^
 -include $(BLDDIR)/*.d
 
 # This section already include automatic dependency tracking by using -include
@@ -39,7 +44,7 @@ $(TARGET): $(OBJS)
 $(BLDDIR)/%.o: $(SRCDIR)/%.cpp
 	mkdir -p $(BLDDIR)
 	#echo "Compiling translation units"
-	$(CC) $(INCLUDE) $(CFLAGS) -c -o $@ $<
+	$(CC) $(INCLUDE) $(MODE) -c -o $@ $<
 
 
 clean:
