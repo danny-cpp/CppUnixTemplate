@@ -15,7 +15,7 @@ TARGET	:= bin/$(PRJNAME)
 
 # Do not remove -MP -MD flags. These are necessary for generating *.d files,
 # which contains rules for headers
-CFLAGS := -Wall -MP -MD
+CFLAGS := -Wall -std=c++11 -MP -MD
 
 SRC	:= $(shell find $(SRCDIR) -type f -name *.cpp)
 OBJS	:= $(patsubst $(SRCDIR)/%, $(BLDDIR)/%, $(SRC:.cpp=.o))
@@ -24,13 +24,13 @@ INCLUDE	:= -I include
 .PHONY: all clean
 
 all: $(TARGET)
-	echo "Running"
-	echo $(SRC)
-	echo $(OBJS)
+	echo "Finalizing"
+	#echo $(SRC)
+	#echo $(OBJS)
 
 $(TARGET): $(OBJS)
-	echo "Linking objs"
-	echo "$(CC) -o $@ $^"
+	#echo "Linking objs"
+	#echo "$(CC) -o $@ $^"
 	$(CC) -o $@ $^
 -include $(BLDDIR)/*.d
 
@@ -38,10 +38,13 @@ $(TARGET): $(OBJS)
 # directive above. Do not add anything in the rules
 $(BLDDIR)/%.o: $(SRCDIR)/%.cpp
 	mkdir -p $(BLDDIR)
-	echo "Compiling translation units"
+	#echo "Compiling translation units"
 	$(CC) $(INCLUDE) $(CFLAGS) -c -o $@ $<
+
 
 clean:
 	rm -fr $(BLDDIR)
 	rm -fr bin/*
+
+
 
